@@ -13,6 +13,29 @@ using namespace std;
 
 class Solution2
 {
+    // DP Solution : Tabulation (bottom up) : Space Optimised
+public:
+    int frogJump(int n, vector<int> &heights)
+    {
+        int prev1 = 0;
+        int prev2 = 0;
+        for (int i = 1; i < n; ++i)
+        {
+            int f = prev1 + abs(heights[i] - heights[i - 1]);
+            int s = INT_MAX;
+            if (i > 1)
+            {
+                s = prev2 + abs(heights[i] - heights[i - 2]);
+            }
+            prev2 = prev1;
+            prev1 = min(f, s);
+        }
+        return prev1;
+    }
+};
+
+class Solution2
+{
     // DP Solution : Tabulation (bottom up)
 public:
     int frogJump(int n, vector<int> &heights)
