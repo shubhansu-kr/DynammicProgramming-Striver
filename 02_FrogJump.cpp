@@ -11,9 +11,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // DP Solution : Tabulation (bottom up)
+public:
+    int frogJump(int n, vector<int> &heights)
+    {
+        vector<int> dp(n);
+        dp[0] = 0;
+        for (int i = 1; i < n; ++i)
+        {
+            int f = dp[i - 1] + abs(heights[i] - heights[i - 1]);
+            int s = INT_MAX;
+            if (i > 1)
+            {
+                s = dp[i - 2] + abs(heights[i] - heights[i - 2]);
+            }
+            dp[i] = min(f, s);
+        }
+        return dp[n - 1];
+    }
+};
+
 class Solution1
 {
-    // DP Solution : Memoization (top-down)
+    // DP Solution : Memoization (Top down)
 public:
     int solve(int n, vector<int> &heights, vector<int> &dp)
     {
@@ -21,8 +43,9 @@ public:
         {
             return 0;
         }
-        if (dp[n] != -1) {
-            return dp[n] ;
+        if (dp[n] != -1)
+        {
+            return dp[n];
         }
         int left = solve(n - 1, heights, dp) + abs(heights[n] - heights[n - 1]);
         int right = INT_MAX;
