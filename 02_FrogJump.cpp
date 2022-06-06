@@ -13,7 +13,28 @@ using namespace std;
 
 class Solution
 {
-    // Simple Recursion - Wrong answer 
+public:    
+    int solve(int n, vector<int> &heights)
+    {
+        if (n == 0)
+        {
+            return 0;
+        }
+        int left = frogJump(n - 1, heights) + abs(heights[n] - heights[n - 1]);
+        int right = INT_MAX;
+        if (n > 1)
+            right = frogJump(n - 2, heights) + abs(heights[n] - heights[n - 2]);
+        return min(left, right);
+    }
+    int frogJump(int n, vector<int> &heights)
+    {
+        return solve(n - 1, heights);
+    }
+};
+
+class Solution
+{
+    // Simple Recursion - Wrong answer
 public:
     int frogJump(int n, vector<int> &heights)
     {
