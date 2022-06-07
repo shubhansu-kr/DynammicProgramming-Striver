@@ -3,6 +3,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Tabulation
+public:
+    int frogJump(int n, vector<int> &heights, int k)
+    {
+        vector<int> dp(n);
+        for (int i = 1; i < n; ++i)
+        {
+            int subMin = INT_MAX;
+            for (int j = 1; j <= k; ++j)
+            {
+                int f = INT_MAX;
+                if (i >= j) {
+                    f = dp[i-j] + abs(heights[i]-heights[i-j]);
+                }
+                subMin = min(f, subMin);
+            }
+            dp[i] = subMin;
+        }
+        return dp[n-1];
+    }
+};
+
 class Solution1
 {
     // Memoization (Top down)
@@ -66,7 +90,7 @@ public:
 int main()
 {
     vector<int> heights = {10, 20, 30, 10};
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.frogJump(4, heights, 2);
 
     ios_base::sync_with_stdio(false);
