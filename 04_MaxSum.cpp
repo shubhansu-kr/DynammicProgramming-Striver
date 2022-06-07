@@ -8,6 +8,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution5
+{
+    // Tabulation
+public:
+    int maximumNonAdjacentSum(vector<int> &nums)
+    {
+        vector<int> dp(nums.size());
+        dp[0] = nums[0];
+        for (int i = 1; i < nums.size(); ++i)
+        {
+            // Take
+            int l = nums[i] + ((i > 1) ? dp[i - 2] : 0);
+            // No take
+            int r = dp[i - 1];
+
+            dp[i] = max(l, r);
+        }
+        return dp.back();
+    }
+};
+
 class Solution4
 {
     // Memoization
@@ -26,7 +47,7 @@ public:
         }
         if (dp[n] != -1)
             return dp[n];
-        
+
         int l = nums[n] + subSum(nums, dp, n - 2);
         int r = subSum(nums, dp, n - 1);
         return dp[n] = max(l, r);
@@ -135,7 +156,7 @@ public:
 
 int main()
 {
-    Solution4 obj1;
+    Solution5 obj1;
     vector<int> nums = {9, 9, 5, 7, 2, 0, 3};
     cout << obj1.maximumNonAdjacentSum(nums);
 
