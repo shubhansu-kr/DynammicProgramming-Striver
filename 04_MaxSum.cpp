@@ -8,6 +8,82 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation
+public:
+    int maximumNonAdjacentSum(vector<int> &nums)
+    {
+        int sum = 0, n = nums.size() - 1;
+        vector<int> dp(n + 1, -1);
+        return subSum(nums, sum, n, dp);
+    }
+    int subSum(vector<int> &nums, int &sum, int n, vector<int> &dp)
+    {
+        if (n <= 0)
+        {
+            return sum;
+        }
+        if (dp[n] != -1)
+            return dp[n];
+        sum += nums[n];
+        int l = subSum(nums, sum, n - 2, dp);
+        sum -= nums[n];
+        int r = subSum(nums, sum, n - 1, dp);
+        return dp[n] = max(l, r);
+    }
+};
+
+class Solution3
+{
+    // Memoization
+public:
+    int maximumNonAdjacentSum(vector<int> &nums)
+    {
+        int sum = 0, n = nums.size() - 1;
+        vector<int> dp(n + 1, -1);
+        return subSum(nums, sum, n, dp);
+    }
+    int subSum(vector<int> &nums, int &sum, int n, vector<int> &dp)
+    {
+        if (n <= 0)
+        {
+            return sum;
+        }
+        if (dp[n] != -1)
+            return dp[n];
+        sum += nums[n];
+        int l = subSum(nums, sum, n - 2, dp);
+        sum -= nums[n];
+        int r = subSum(nums, sum, n - 1, dp);
+        return dp[n] = max(l, r);
+    }
+};
+
+class Solution2
+{
+    // Using recursion to find all the valid sub-Sequence
+public:
+    int maximumNonAdjacentSum(vector<int> &nums)
+    {
+        int sum = 0, ans = -1, n = nums.size();
+        subSum(nums, sum, ans, n);
+        return ans;
+    }
+    void subSum(vector<int> &nums, int &sum, int &ans, int n)
+    {
+        if (n <= 0)
+        {
+            ans = max(ans, sum);
+            return;
+        }
+        sum += nums[n];
+        subSum(nums, sum, ans, n - 2);
+        sum -= nums[n];
+        subSum(nums, sum, ans, n - 1);
+    }
+};
+
 class Solution1
 {
     // Using recursion to find all the valid sub-Sequence
