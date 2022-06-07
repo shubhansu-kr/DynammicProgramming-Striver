@@ -10,26 +10,25 @@ using namespace std;
 
 class Solution4
 {
-    // Tabulation
+    // Memoization
 public:
     int maximumNonAdjacentSum(vector<int> &nums)
     {
-        int sum = 0, n = nums.size() - 1;
-        vector<int> dp(n + 1, -1);
-        return subSum(nums, sum, n, dp);
+        int n = nums.size();
+        vector<int> dp(n, -1);
+        return subSum(nums, dp, n - 1);
     }
-    int subSum(vector<int> &nums, int &sum, int n, vector<int> &dp)
+    int subSum(vector<int> &nums, vector<int> &dp, int n)
     {
-        if (n <= 0)
+        if (n < 1)
         {
-            return sum;
+            return n == 0 ? nums[0] : 0;
         }
         if (dp[n] != -1)
             return dp[n];
-        sum += nums[n];
-        int l = subSum(nums, sum, n - 2, dp);
-        sum -= nums[n];
-        int r = subSum(nums, sum, n - 1, dp);
+        
+        int l = nums[n] + subSum(nums, dp, n - 2);
+        int r = subSum(nums, dp, n - 1);
         return dp[n] = max(l, r);
     }
 };
@@ -136,7 +135,7 @@ public:
 
 int main()
 {
-    Solution1 obj1;
+    Solution4 obj1;
     vector<int> nums = {9, 9, 5, 7, 2, 0, 3};
     cout << obj1.maximumNonAdjacentSum(nums);
 
