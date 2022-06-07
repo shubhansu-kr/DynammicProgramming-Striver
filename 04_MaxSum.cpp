@@ -8,6 +8,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution6
+{
+    // Tabulation: Space optimisation
+public:
+    int maximumNonAdjacentSum(vector<int> &nums)
+    {
+        int prev = nums[0], prev1 = 0;
+        for (int i = 1; i < nums.size(); ++i)
+        {
+            // Take
+            int l = nums[i] + prev1;
+            // No take
+            int r = prev;
+
+            prev1 = prev;
+            prev = max(l, r);
+        }
+        return prev;
+    }
+};
+
 class Solution5
 {
     // Tabulation
@@ -156,7 +177,7 @@ public:
 
 int main()
 {
-    Solution5 obj1;
+    Solution6 obj1;
     vector<int> nums = {9, 9, 5, 7, 2, 0, 3};
     cout << obj1.maximumNonAdjacentSum(nums);
 
