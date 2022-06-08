@@ -13,6 +13,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursive solution : Improved
+public:
+    int ninjaTraining(int n, vector<vector<int>> &points)
+    {
+        int ans = INT_MIN, credits = 0;
+        return solve(n - 1, points);
+    }
+    int solve(int n, vector<vector<int>> &points, int k = -1)
+    {
+        if (n < 0)
+        {
+            return 0;
+        }
+        int subMax = INT_MIN;
+        for (int j = 0; j < 3; ++j)
+        {
+            if (k == j)
+                continue;
+            subMax = max(subMax, (points[n][j] + solve(n - 1, points, j)));
+        }
+        return subMax;
+    }
+};
+
 class Solution1
 {
     // Recursive solution : N as parameter
@@ -20,7 +46,7 @@ public:
     int ninjaTraining(int n, vector<vector<int>> &points)
     {
         int ans = INT_MIN, credits = 0;
-        solve(n-1, points, ans, credits);
+        solve(n - 1, points, ans, credits);
         return ans;
     }
     void solve(int n, vector<vector<int>> &points, int &ans, int &credits, int k = -1)
@@ -35,7 +61,7 @@ public:
             if (k == j)
                 continue;
             credits += points[n][j];
-            solve(n-1, points, ans, credits, j);
+            solve(n - 1, points, ans, credits, j);
             credits -= points[n][j];
         }
     }
@@ -73,7 +99,7 @@ int main()
 {
     vector<vector<int>> points = {{1, 2, 5}, {3, 1, 1}, {3, 3, 3}};
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.ninjaTraining(3, points);
 
     // ios_base::sync_with_stdio(false);
