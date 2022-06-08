@@ -13,6 +13,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation
+public:
+    int ninjaTraining(int n, vector<vector<int>> &points)
+    {
+        vector<vector<int>> dp(n, vector<int>(4,0));
+        dp[0][0] = max(points[0][1], points[0][2]);
+        dp[0][1] = max(points[0][0], points[0][2]);
+        dp[0][2] = max(points[0][0], points[0][1]);
+        dp[0][3] = max(points[0][0], points[0][1], points[0][2]);
+
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                for (int k = 0; k < 3; ++k)
+                {
+                    if (k != j) {
+                        int point = points[i][k] + dp[i-1][k];
+                        dp[i][j] = max(dp[i][j], point); 
+                    }
+                }
+            }           
+        }
+        return dp[n-1][3]; 
+    }
+};
+
 class Solution3
 {
     // Recursive solution : Memoization
@@ -129,7 +158,7 @@ int main()
 {
     vector<vector<int>> points = {{1, 2, 5}, {3, 1, 1}, {3, 3, 3}};
 
-    Solution3 Obj1;
+    Solution4 Obj1;
     cout << Obj1.ninjaTraining(3, points);
 
     // ios_base::sync_with_stdio(false);
