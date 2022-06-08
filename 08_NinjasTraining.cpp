@@ -15,7 +15,7 @@ using namespace std;
 
 class Solution4
 {
-    // Tabulation
+    // Tabulation 
 public:
     int ninjaTraining(int n, vector<vector<int>> &points)
     {
