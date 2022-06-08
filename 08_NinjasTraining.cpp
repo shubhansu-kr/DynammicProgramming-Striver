@@ -13,6 +13,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Recursive solution : Improved
+public:
+    int ninjaTraining(int n, vector<vector<int>> &points)
+    {
+        vector<int> dp(n, -1);
+        return solve(n - 1, points, dp);
+    }
+    int solve(int n, vector<vector<int>> &points, vector<int> &dp, int k = -1)
+    {
+        if (n < 0)
+        {
+            return 0;
+        }
+        if (dp[n] != -1)
+            return dp[n];
+        int subMax = INT_MIN;
+        for (int j = 0; j < 3; ++j)
+        {
+            if (k == j)
+                continue;
+            subMax = max(subMax, (points[n][j] + solve(n - 1, points, dp, j)));
+        }
+        return dp[n] = subMax;
+    }
+};
+
 class Solution2
 {
     // Recursive solution : Improved
