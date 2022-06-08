@@ -14,19 +14,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution3
+class Solution4
 {
-    // Solution 2 improved
+    // Recursive solution : Memoization
 public:
     int rob(vector<int> &nums)
     {
         int n = nums.size();
-        int l = solve(nums,  n, 1);
+        vector<int> dp(n, -1);
+        int l = solve(nums, dp, n, 1);
         --n;
-        int r = solve(nums,  n);
-        return max(l, r) ;
+
+        vector<int> cp(n, -1);
+        int r = solve(nums, cp, n);
+        return max(l, r);
     }
-    int solve(vector<int> &nums,  int &n, int i = 0)
+    int solve(vector<int> &nums, vector<int> &dp, int &n, int i = 0)
     {
         if (i >= n)
         {
@@ -35,8 +38,40 @@ public:
         // l -> Not picked
         // r -> picked
 
-        int l = solve(nums, n, i+1);
-        int r = solve(nums, n, i+2) + nums[i];
+        if (dp[i] != -1)
+        {
+            return dp[i];
+        }
+        int l = solve(nums, dp, n, i + 1);
+        int r = solve(nums, dp, n, i + 2) + nums[i];
+
+        return dp[i] = max(l, r);
+    }
+};
+
+class Solution3
+{
+    // Solution 2 improved
+public:
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size();
+        int l = solve(nums, n, 1);
+        --n;
+        int r = solve(nums, n);
+        return max(l, r);
+    }
+    int solve(vector<int> &nums, int &n, int i = 0)
+    {
+        if (i >= n)
+        {
+            return 0;
+        }
+        // l -> Not picked
+        // r -> picked
+
+        int l = solve(nums, n, i + 1);
+        int r = solve(nums, n, i + 2) + nums[i];
 
         return max(l, r);
     }
@@ -127,9 +162,9 @@ public:
 
 int main()
 {
-    vector<int> nums = {2, 3, 3};
+    vector<int> nums = {2, 3, 1, 4};
 
-    Solution3 Obj1;
+    Solution4 Obj1;
     cout << Obj1.rob(nums);
 
     ios_base::sync_with_stdio(false);
