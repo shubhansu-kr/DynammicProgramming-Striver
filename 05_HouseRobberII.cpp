@@ -14,6 +14,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution5
+{
+    // Recursive solution : Tabulation
+public:
+    int rob(vector<int> &nums)
+    {
+        vector<int> temp1, temp2;
+        int n = nums.size();
+        for (int i = 0; i < n; ++i)
+        {
+            if (i != 0)
+                temp1.emplace_back(nums[i]);
+            if (i != n - 1)
+                temp2.emplace_back(nums[i]);
+        }
+        if (n == 1)
+            return nums[0];
+        return max(solve(temp1), solve(temp2));
+    }
+
+    int solve(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<int> dp(n);
+        dp[0] = nums[0];
+        for (int i = 1; i < n; ++i)
+        {
+            int p = nums[i] + ((i > 1) ? dp[i - 2] : 0);
+            int x = dp[i - 1];
+            dp[i] = max(p, x);
+        }
+        return dp[n - 1];
+    }
+};
+
 class Solution4
 {
     // Recursive solution : Memoization
@@ -21,6 +56,8 @@ public:
     int rob(vector<int> &nums)
     {
         int n = nums.size();
+        if (n < 2)
+            return nums[0];
         vector<int> dp(n, -1);
         int l = solve(nums, dp, n, 1);
         --n;
@@ -162,9 +199,10 @@ public:
 
 int main()
 {
-    vector<int> nums = {2, 3, 1, 4};
+    // vector<int> nums = {2, 3, 1, 4, 0, 3, 5, 2, 4, 2, 1};
+    vector<int> nums = {2};
 
-    Solution4 Obj1;
+    Solution5 Obj1;
     cout << Obj1.rob(nums);
 
     ios_base::sync_with_stdio(false);
