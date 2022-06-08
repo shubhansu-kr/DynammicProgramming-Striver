@@ -12,6 +12,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursive Solution Improved
+public:
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size();
+        return solve(nums, n - 1);
+    }
+    int solve(vector<int> &nums, int n)
+    {
+        if (n < 0) {
+            return 0 ;
+        }
+        int p = nums[n] + solve(nums, n-2);
+        int x = solve(nums, n-1);
+        return max(p, x);
+    }
+};
+
 class Solution
 {
     // Recursive Solution
@@ -42,8 +62,10 @@ public:
 int main()
 {
     vector<int> nums = {3, 4, 2};
-    Solution Obj1;
+
+    Solution1 Obj1;
     cout << Obj1.rob(nums);
+
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     return 0;
