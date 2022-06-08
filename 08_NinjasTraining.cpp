@@ -15,29 +15,31 @@ using namespace std;
 
 class Solution3
 {
-    // Recursive solution : Improved
+    // Recursive solution : Memoization
 public:
     int ninjaTraining(int n, vector<vector<int>> &points)
     {
-        vector<int> dp(n, -1);
+        vector<vector<int>> dp(n, vector<int>(3, -1));
         return solve(n - 1, points, dp);
     }
-    int solve(int n, vector<vector<int>> &points, vector<int> &dp, int k = -1)
+    int solve(int n, vector<vector<int>> &points, vector<vector<int>> &dp, int k = -1)
     {
         if (n < 0)
         {
             return 0;
         }
-        if (dp[n] != -1)
-            return dp[n];
         int subMax = INT_MIN;
         for (int j = 0; j < 3; ++j)
         {
             if (k == j)
                 continue;
-            subMax = max(subMax, (points[n][j] + solve(n - 1, points, dp, j)));
+            if (dp[n][j] == -1)
+            {
+                dp[n][j] = (points[n][j] + solve(n - 1, points, dp, j));
+            }
+            subMax = max(subMax, dp[n][j]);
         }
-        return dp[n] = subMax;
+        return subMax;
     }
 };
 
@@ -127,7 +129,7 @@ int main()
 {
     vector<vector<int>> points = {{1, 2, 5}, {3, 1, 1}, {3, 3, 3}};
 
-    Solution2 Obj1;
+    Solution3 Obj1;
     cout << Obj1.ninjaTraining(3, points);
 
     // ios_base::sync_with_stdio(false);
