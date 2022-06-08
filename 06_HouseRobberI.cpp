@@ -12,6 +12,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursive Solution : Memoization
+public:
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<int> dp(n, -1);
+        return dp[n - 1] = solve(nums, dp, n - 1);
+    }
+    int solve(vector<int> &nums, vector<int> &dp, int n)
+    {
+        if (n < 0)
+        {
+            return 0;
+        }
+        if (dp[n] != -1)
+            return dp[n];
+        int p = nums[n] + solve(nums, dp, n - 2);
+        int x = solve(nums, dp, n - 1);
+        return dp[n] = max(p, x);
+    }
+};
+
 class Solution1
 {
     // Recursive Solution Improved
@@ -23,11 +47,12 @@ public:
     }
     int solve(vector<int> &nums, int n)
     {
-        if (n < 0) {
-            return 0 ;
+        if (n < 0)
+        {
+            return 0;
         }
-        int p = nums[n] + solve(nums, n-2);
-        int x = solve(nums, n-1);
+        int p = nums[n] + solve(nums, n - 2);
+        int x = solve(nums, n - 1);
         return max(p, x);
     }
 };
@@ -63,7 +88,7 @@ int main()
 {
     vector<int> nums = {3, 4, 2};
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.rob(nums);
 
     ios_base::sync_with_stdio(false);
