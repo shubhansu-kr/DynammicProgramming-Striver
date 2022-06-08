@@ -12,6 +12,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Recursive Solution : Tabulation
+public:
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<int> dp(n);
+        dp[0] = nums[0];
+        for (int i = 1; i < n; ++i)
+        {
+            int p = nums[i] + ((i > 1) ? dp[i - 2] : 0);
+            int x = dp[i - 1];
+            dp[i] = max(p, x);
+        }
+        return dp[n - 1];
+    }
+};
+
 class Solution2
 {
     // Recursive Solution : Memoization
