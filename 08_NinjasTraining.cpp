@@ -13,6 +13,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursive solution : N as parameter
+public:
+    int ninjaTraining(int n, vector<vector<int>> &points)
+    {
+        int ans = INT_MIN, credits = 0;
+        solve(n-1, points, ans, credits);
+        return ans;
+    }
+    void solve(int n, vector<vector<int>> &points, int &ans, int &credits, int k = -1)
+    {
+        if (n < 0)
+        {
+            ans = max(ans, credits);
+            return;
+        }
+        for (int j = 0; j < 3; ++j)
+        {
+            if (k == j)
+                continue;
+            credits += points[n][j];
+            solve(n-1, points, ans, credits, j);
+            credits -= points[n][j];
+        }
+    }
+};
+
 class Solution
 {
     // Recursive solution
@@ -23,7 +51,7 @@ public:
         solve(n, points, ans, credits);
         return ans;
     }
-    void solve(int n, vector<vector<int>> &points, int &ans, int &credits, int k = -1, int i = 0)
+    void solve(int &n, vector<vector<int>> &points, int &ans, int &credits, int k = -1, int i = 0)
     {
         if (i >= n)
         {
@@ -45,7 +73,7 @@ int main()
 {
     vector<vector<int>> points = {{1, 2, 5}, {3, 1, 1}, {3, 3, 3}};
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.ninjaTraining(3, points);
 
     // ios_base::sync_with_stdio(false);
