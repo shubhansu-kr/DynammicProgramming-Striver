@@ -14,6 +14,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Solution 2 improved
+public:
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size();
+        int l = solve(nums,  n, 1);
+        --n;
+        int r = solve(nums,  n);
+        return max(l, r) ;
+    }
+    int solve(vector<int> &nums,  int &n, int i = 0)
+    {
+        if (i >= n)
+        {
+            return 0;
+        }
+        // l -> Not picked
+        // r -> picked
+
+        int l = solve(nums, n, i+1);
+        int r = solve(nums, n, i+2) + nums[i];
+
+        return max(l, r);
+    }
+};
+
 class Solution2
 {
     // Recursion Solution for adjacent sum - Using i as a parameter
@@ -101,7 +129,7 @@ int main()
 {
     vector<int> nums = {2, 3, 3};
 
-    Solution2 Obj1;
+    Solution3 Obj1;
     cout << Obj1.rob(nums);
 
     ios_base::sync_with_stdio(false);
