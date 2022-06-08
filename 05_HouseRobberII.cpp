@@ -14,6 +14,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursion Solution for adjacent sum - Using i as a parameter
+    // And evaluating first and last elements seprately.
+public:
+    int rob(vector<int> &nums)
+    {
+        int ans1 = INT_MIN, ans2 = INT_MIN, sum = 0, n = nums.size();
+        solve(nums, sum, ans1, n, 1);
+        --n;
+        solve(nums, sum, ans2, n);
+        return max(ans1, ans2);
+    }
+    void solve(vector<int> &nums, int &sum, int &ans, int &n, int i = 0)
+    {
+        if (i >= n)
+        {
+            ans = max(ans, sum);
+            return;
+        }
+        // l -> Not picked
+        // r -> picked
+
+        sum += nums[i];
+        solve(nums, sum, ans, n, i + 2);
+        sum -= nums[i];
+        solve(nums, sum, ans, n, i + 1);
+    }
+};
+
 class Solution1
 {
     // Recursion Solution for adjacent sum - Using i as a parameter
@@ -71,7 +101,7 @@ int main()
 {
     vector<int> nums = {2, 3, 3};
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.rob(nums);
 
     ios_base::sync_with_stdio(false);
