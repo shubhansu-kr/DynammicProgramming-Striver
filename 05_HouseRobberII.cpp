@@ -14,6 +14,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution6
+{
+    // Recursive solution : Tabulation (Space optimised)
+public:
+    int rob(vector<int> &nums)
+    {
+        vector<int> temp1, temp2;
+        int n = nums.size();
+        for (int i = 0; i < n; ++i)
+        {
+            if (i != 0)
+                temp1.emplace_back(nums[i]);
+            if (i != n - 1)
+                temp2.emplace_back(nums[i]);
+        }
+        if (n == 1)
+            return nums[0];
+        return max(solve(temp1), solve(temp2));
+    }
+
+    int solve(vector<int> &nums)
+    {
+        int n = nums.size(),prev = nums[0], prev1 = 0;
+        for (int i = 1; i < n; ++i)
+        {
+            int p = nums[i] + prev1, x = prev;
+            prev1 = prev;
+            prev = max(p, x);
+        }
+        return prev;
+    }
+};
+
 class Solution5
 {
     // Recursive solution : Tabulation
