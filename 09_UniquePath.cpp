@@ -12,8 +12,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursive solution : Improved 
+public:
+    int uniquePaths(int m, int n)
+    {
+        if (m < 1 || n < 1)
+            return 0;
+        if (m == 1 && n == 1)
+        {
+            return 1;
+        }
+        return uniquePaths(m - 1, n) + uniquePaths(m, n - 1);
+    }
+};
+
 class Solution
 {
+    // Recursive solution
 public:
     int uniquePaths(int m, int n)
     {
@@ -37,7 +54,7 @@ public:
 
 int main()
 {
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.uniquePaths(3, 7);
 
     ios_base::sync_with_stdio(false);
