@@ -13,13 +13,45 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution4
+class Solution5
 {
-    // Tabulation 
+    // Tabulation : Space optimisation
 public:
     int ninjaTraining(int n, vector<vector<int>> &points)
     {
-        vector<vector<int>> dp(n, vector<int>(4,0));
+        vector<int> cp(4);
+
+        cp[0] = max(points[0][1], points[0][2]);
+        cp[1] = max(points[0][0], points[0][2]);
+        cp[2] = max(points[0][0], points[0][1]);
+        cp[3] = max(points[0][0], points[0][1], points[0][2]);
+
+        for (int i = 1; i < n; ++i)
+        {
+            vector<int> temp(4,0);
+            for (int j = 0; j < 4; ++j)
+            {
+                for (int k = 0; k < 3; ++k)
+                {
+                    if (k != j)
+                    {
+                        temp[j] = max(temp[j], (points[i][k] + cp[k]));
+                    }
+                }
+            }
+            cp = temp;
+        }
+        return cp[3];
+    }
+};
+
+class Solution4
+{
+    // Tabulation
+public:
+    int ninjaTraining(int n, vector<vector<int>> &points)
+    {
+        vector<vector<int>> dp(n, vector<int>(4, 0));
         dp[0][0] = max(points[0][1], points[0][2]);
         dp[0][1] = max(points[0][0], points[0][2]);
         dp[0][2] = max(points[0][0], points[0][1]);
@@ -31,14 +63,15 @@ public:
             {
                 for (int k = 0; k < 3; ++k)
                 {
-                    if (k != j) {
-                        int point = points[i][k] + dp[i-1][k];
-                        dp[i][j] = max(dp[i][j], point); 
+                    if (k != j)
+                    {
+                        int point = points[i][k] + dp[i - 1][k];
+                        dp[i][j] = max(dp[i][j], point);
                     }
                 }
-            }           
+            }
         }
-        return dp[n-1][3]; 
+        return dp[n - 1][3];
     }
 };
 
@@ -158,7 +191,7 @@ int main()
 {
     vector<vector<int>> points = {{1, 2, 5}, {3, 1, 1}, {3, 3, 3}};
 
-    Solution4 Obj1;
+    Solution5 Obj1;
     cout << Obj1.ninjaTraining(3, points);
 
     // ios_base::sync_with_stdio(false);
