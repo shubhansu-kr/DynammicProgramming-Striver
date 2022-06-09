@@ -12,9 +12,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursive solution : Memoization
+public:
+    int uniquePaths(int m, int n)
+    {
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        return solve(m - 1, n - 1, dp);
+    }
+    int solve(int m, int n, vector<vector<int>> &dp)
+    {
+        if (m < 0 || n < 0)
+            return 0;
+        if (m == 0 && n == 0)
+        {
+            return 1;
+        }
+        if (dp[m][n] != -1)
+        {
+            return dp[m][n];
+        }
+        return dp[m][n] = solve(m - 1, n, dp) + solve(m, n - 1, dp);
+    }
+};
+
 class Solution1
 {
-    // Recursive solution : Improved 
+    // Recursive solution : Improved
 public:
     int uniquePaths(int m, int n)
     {
@@ -54,7 +79,7 @@ public:
 
 int main()
 {
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.uniquePaths(3, 7);
 
     ios_base::sync_with_stdio(false);
