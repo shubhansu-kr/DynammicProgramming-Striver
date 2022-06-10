@@ -17,6 +17,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursion Improved
+public:
+    int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid)
+    {
+        return solve(obstacleGrid);
+    }
+    int solve(vector<vector<int>> &obs, int i = 0, int j = 0)
+    {
+        if (i == obs.size() - 1 && j == obs[0].size() - 1 && !obs[i][j])
+        {
+            return 1;
+        }
+        if (i >= obs.size() || j >= obs[0].size() || obs[i][j])
+        {
+            return 0;
+        }
+        // Go down -> Go right
+        return solve(obs, i + 1, j) + solve(obs, i, j + 1);
+    }
+};
+
 class Solution
 {
     // Simple Recursion
@@ -47,9 +70,9 @@ public:
 
 int main()
 {
-    vector<vector<int>> grid = {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
+    vector<vector<int>> grid = {{0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}};
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.uniquePathsWithObstacles(grid);
 
     ios_base::sync_with_stdio(false);
