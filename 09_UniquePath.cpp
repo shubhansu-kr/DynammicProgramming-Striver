@@ -12,6 +12,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Recursive solution : Tabulation : Space optimisation
+public:
+    int uniquePaths(int m, int n)
+    {
+        vector<int> prev(n, 1);
+        for (int i = 1; i < m; ++i)
+        {
+            int left = 1;
+            for (int j = 1; j < n; ++j)
+            {
+                prev[j] += left;
+                left = prev[j];
+            }
+        }
+        return prev[n-1];
+    }
+};
+
 class Solution3
 {
     // Recursive solution : Tabulation
@@ -97,8 +117,8 @@ public:
 
 int main()
 {
-    Solution3 Obj1;
-    cout << Obj1.uniquePaths(1, 2);
+    Solution4 Obj1;
+    cout << Obj1.uniquePaths(3, 7);
 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
