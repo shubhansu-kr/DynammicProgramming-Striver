@@ -17,6 +17,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursion : Memoization
+public:
+    int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid)
+    {
+        int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        // return solve(obstacleGrid, dp);
+        return dp[m - 1][n - 1] = solve(obstacleGrid, dp);
+    }
+    int solve(vector<vector<int>> &obs, vector<vector<int>> &dp, int i = 0, int j = 0)
+    {
+        if (i == obs.size() - 1 && j == obs[0].size() - 1 && !obs[i][j])
+        {
+            return 1;
+        }
+        if (i >= obs.size() || j >= obs[0].size() || obs[i][j])
+        {
+            return 0;
+        }
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        // Go down -> Go right
+        return dp[i][j] = solve(obs, dp, i + 1, j) + solve(obs, dp, i, j + 1);
+    }
+};
+
 class Solution1
 {
     // Recursion Improved
@@ -72,7 +100,7 @@ int main()
 {
     vector<vector<int>> grid = {{0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}};
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.uniquePathsWithObstacles(grid);
 
     ios_base::sync_with_stdio(false);
