@@ -9,6 +9,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Tabulation
+public:
+    int minPathSum(vector<vector<int>> &grid)
+    {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        for (int i = 0; i < m; ++i)
+        {
+            for (int j = 0; j < n; ++j)
+            {
+                if (i == 0 && j == 0)
+                {
+                    dp[i][j] = grid[i][j];
+                }
+                else
+                {
+                    int up = grid[i][j];
+                    if (i > 0)
+                        up += dp[i - 1][j];
+                    else
+                        up += 1e9;
+                    int left = grid[i][j];
+                    if (j > 0)
+                        left += dp[i][j - 1];
+                    else
+                        up += 1e9;
+
+                    dp[i][j] = min(left, up);
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+};
+
 class Solution2
 {
     // Recursive solution : Memoization
@@ -80,7 +117,7 @@ int main()
 {
     vector<vector<int>> grid = {{1, 3, 1}, {1, 5, 1}, {4, 2, 1}};
 
-    Solution2 Obj1;
+    Solution3 Obj1;
     cout << Obj1.minPathSum(grid);
 
     ios_base::sync_with_stdio(false);
