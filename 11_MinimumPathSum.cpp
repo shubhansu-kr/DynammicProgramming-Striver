@@ -9,6 +9,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursive solution : m, n as parameters
+public:
+    int minPathSum(vector<vector<int>> &grid)
+    {
+        int m = grid.size(), n = grid[0].size();
+        return solve(grid, m - 1, n - 1);
+    }
+    int solve(vector<vector<int>> &grid, int m, int n)
+    {
+        if (m < 0 || n < 0)
+            return ;
+        if (m == 0 && n == 0)
+            return grid[0][0];
+        int l = solve(grid, m, n - 1) + grid[m][n];
+        int u = solve(grid, m - 1, n) + grid[m][n];
+        return min(l, u);
+    }
+};
+
 class Solution
 {
     // Recursive solution
@@ -35,7 +56,7 @@ int main()
 {
     vector<vector<int>> grid = {{1, 3, 1}, {1, 5, 1}, {4, 2, 1}};
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.minPathSum(grid);
 
     ios_base::sync_with_stdio(false);
