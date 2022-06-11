@@ -35,7 +35,7 @@ public:
                     if (j > 0)
                         left += curr[j-1];
                     else
-                        up += 1e9;
+                        left += 1e9;
 
                     curr[j] = min(left, up);
                 }
@@ -73,7 +73,7 @@ public:
                     if (j > 0)
                         left += dp[i][j - 1];
                     else
-                        up += 1e9;
+                        left += 1e9;
 
                     dp[i][j] = min(left, up);
                 }
