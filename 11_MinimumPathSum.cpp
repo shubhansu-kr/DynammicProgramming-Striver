@@ -9,6 +9,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursive solution : Memoization
+public:
+    int minPathSum(vector<vector<int>> &grid)
+    {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        return solve(grid, dp, m - 1, n - 1);
+    }
+    int solve(vector<vector<int>> &grid, vector<vector<int>> &dp, int m, int n)
+    {
+        if (m < 0 || n < 0)
+            return 1e9;
+        if (m == 0 && n == 0)
+            return grid[0][0];
+        if (dp[m][n] != -1)
+            return dp[m][n];
+        int l = solve(grid, dp, m, n - 1) + grid[m][n];
+        int u = solve(grid, dp, m - 1, n) + grid[m][n];
+        return dp[m][n] = min(l, u);
+    }
+};
+
 class Solution1
 {
     // Recursive solution : m, n as parameters
@@ -21,7 +45,7 @@ public:
     int solve(vector<vector<int>> &grid, int m, int n)
     {
         if (m < 0 || n < 0)
-            return ;
+            return 1e9;
         if (m == 0 && n == 0)
             return grid[0][0];
         int l = solve(grid, m, n - 1) + grid[m][n];
@@ -56,7 +80,7 @@ int main()
 {
     vector<vector<int>> grid = {{1, 3, 1}, {1, 5, 1}, {4, 2, 1}};
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.minPathSum(grid);
 
     ios_base::sync_with_stdio(false);
