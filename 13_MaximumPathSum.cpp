@@ -14,6 +14,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursive : Memoization
+public:
+    int getMaxPathSum(vector<vector<int>> &matrix)
+    {
+        int m = matrix.size(), n = matrix[0].size();
+        vector<vector<int>> dp(m, vector<int>(n));
+        dp[0] = matrix[0];
+        int subMax = INT_MIN;
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 0; j < n; ++j)
+            {
+                int up = matrix[i][j] + dp[i - 1][j];
+                int right = INT_MIN;
+                if (j < n - 1)
+                    right = matrix[i][j] + dp[i - 1][j + 1];
+
+                int left = INT_MIN;
+                if (j > 0)
+                    left = matrix[i][j] + dp[i - 1][j - 1];
+
+                // dp[i][j] = max(up, right, left); Cannot compare 3 value: Giving error
+                int ans = max(left, right);
+                dp[i][j] = max(ans, up);
+            }
+        }
+        // Find max of last row
+        for (int j = 0; j < n; ++j)
+        {
+            subMax = max(subMax, dp[m - 1][j]);
+        }
+        return subMax;
+    }
+};
+
 class Solution1
 {
     // Recursive : Memoization
@@ -37,7 +74,8 @@ public:
             return matrix[i][j];
         }
 
-        if (dp[i][j] != -1) return dp[i][j];
+        if (dp[i][j] != -1)
+            return dp[i][j];
 
         // up : ALways valid
         int up = matrix[i][j] + solve(matrix, dp, i - 1, j);
@@ -97,7 +135,7 @@ int main()
 {
     vector<vector<int>> matrix = {{1, 2, 10, 4}, {100, 3, 2, 1}, {1, 1, 20, 2}, {1, 2, 2, 1}};
 
-    Solution1 obj1;
+    Solution2 obj1;
     cout << obj1.getMaxPathSum(matrix);
 
     ios_base::sync_with_stdio(false);
