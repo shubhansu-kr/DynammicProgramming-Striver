@@ -14,9 +14,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Tabulation : Space optimisation
+public:
+    int getMaxPathSum(vector<vector<int>> &matrix)
+    {
+        int m = matrix.size(), n = matrix[0].size();
+        vector<int> cp(n);
+        cp = matrix[0];
+        int subMax = INT_MIN;
+        for (int i = 1; i < m; ++i)
+        {
+            vector<int> temp(n);
+            for (int j = 0; j < n; ++j)
+            {
+
+                int up = matrix[i][j] + cp[j];
+                int right = INT_MIN;
+                if (j < n - 1)
+                    right = matrix[i][j] + cp[j + 1];
+
+                int left = INT_MIN;
+                if (j > 0)
+                    left = matrix[i][j] + cp[j - 1];
+
+                // dp[i][j] = max(up, right, left); Cannot compare 3 value: Giving error
+                int ans = max(left, right);
+                temp[j] = max(ans, up);
+            }
+            cp.swap(temp);
+        }
+        // Find max of last row
+        for (int j = 0; j < n; ++j)
+        {
+            subMax = max(subMax, cp[j]);
+        }
+        return subMax;
+    }
+};
+
 class Solution2
 {
-    // Recursive : Memoization
+    // Tabulation
 public:
     int getMaxPathSum(vector<vector<int>> &matrix)
     {
@@ -24,7 +64,7 @@ public:
         vector<vector<int>> dp(m, vector<int>(n));
         dp[0] = matrix[0];
         int subMax = INT_MIN;
-        for (int i = 1; i < n; ++i)
+        for (int i = 1; i < m; ++i)
         {
             for (int j = 0; j < n; ++j)
             {
@@ -135,7 +175,7 @@ int main()
 {
     vector<vector<int>> matrix = {{1, 2, 10, 4}, {100, 3, 2, 1}, {1, 1, 20, 2}, {1, 2, 2, 1}};
 
-    Solution2 obj1;
+    Solution3 obj1;
     cout << obj1.getMaxPathSum(matrix);
 
     ios_base::sync_with_stdio(false);
