@@ -14,9 +14,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursive : Memoization
+public:
+    int getMaxPathSum(vector<vector<int>> &matrix)
+    {
+        int m = matrix.size(), n = matrix[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        int subMax = INT_MIN;
+        for (int i = 0; i < n; ++i)
+        {
+            dp[m - 1][i] = solve(matrix, dp, m - 1, i);
+            subMax = max(subMax, dp[m - 1][i]);
+        }
+        return subMax;
+    }
+    int solve(vector<vector<int>> &matrix, vector<vector<int>> &dp, int i, int j)
+    {
+        if (i == 0)
+        {
+            return matrix[i][j];
+        }
+
+        if (dp[i][j] != -1) return dp[i][j];
+
+        // up : ALways valid
+        int up = matrix[i][j] + solve(matrix, dp, i - 1, j);
+        // right : Valid for (j < n-1)
+        int right = INT_MIN;
+        if (j < matrix[0].size() - 1)
+            right = matrix[i][j] + solve(matrix, dp, i - 1, j + 1);
+        // left  : Valid for j > 0
+        int left = INT_MIN;
+        if (j > 0)
+            left = matrix[i][j] + solve(matrix, dp, i - 1, j - 1);
+
+        int ans = max(left, up);
+        return dp[i][j] = max(ans, right);
+    }
+};
+
 class Solution
 {
-    // Recursive solution 
+    // Recursive solution
 public:
     int getMaxPathSum(vector<vector<int>> &matrix)
     {
@@ -56,7 +97,7 @@ int main()
 {
     vector<vector<int>> matrix = {{1, 2, 10, 4}, {100, 3, 2, 1}, {1, 1, 20, 2}, {1, 2, 2, 1}};
 
-    Solution obj1;
+    Solution1 obj1;
     cout << obj1.getMaxPathSum(matrix);
 
     ios_base::sync_with_stdio(false);
