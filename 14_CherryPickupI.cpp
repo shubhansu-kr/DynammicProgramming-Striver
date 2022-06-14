@@ -22,6 +22,72 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursive solution : Memoization // Wrong Solution 
+public:
+    int cherryPickup(vector<vector<int>> &grid)
+    {
+        int m = grid.size(), n = grid[0].size();
+        return max(reachEnd(grid), 0);
+    }
+    int reachEnd(vector<vector<int>> &grid, int i = 0, int j = 0)
+    {
+        int flag = 0;
+        if (i >= grid.size() || j >= grid[0].size() || grid[i][j] == -1)
+            return -(1e9);
+
+        if (grid[i][j] == 1)
+            grid[i][j] = 0, flag = 1;
+
+        if (i == grid.size() - 1 && j == grid[0].size() - 1)
+        {
+            // reached first destination
+            vector<vector<int>> cp(grid.size() - 1, vector<int>(grid[0].size() - 1, -1));
+            return flag + reachBegin(grid, cp, grid.size() - 1, grid[0].size() - 1);
+        }
+
+        // Go right
+        int r = flag + reachEnd(grid, i, j + 1);
+        // Go down
+        int d = flag + reachEnd(grid, i + 1, j);
+
+        if (flag)
+            grid[i][j] = 1;
+
+        return max(r, d);
+    }
+
+    int reachBegin(vector<vector<int>> &grid, vector<vector<int>> &cp, int i = 0, int j = 0)
+    {
+        int flag = 0;
+        if (i < 0 || j < 0 || grid[i][j] == -1)
+            return -1e9;
+
+        if (cp[i][j] != -1)
+            return cp[i][j];
+
+        if (grid[i][j] == 1)
+            grid[i][j] = 0, flag = 1;
+
+        if (i == 0 && j == 0)
+        {
+            // reached final destination
+            return flag;
+        }
+
+        // Go left
+        int l = flag + reachBegin(grid, cp, i, j - 1);
+        // Go up
+        int u = flag + reachBegin(grid, cp, i - 1, j);
+
+        if (flag)
+            grid[i][j] = 1;
+
+        return cp[i][j] = max(l, u);
+    }
+};
+
 class Solution1
 {
     // Better recursive solution
@@ -162,8 +228,8 @@ int main()
 
     // [[1,1,-1],[1,-1,1],[-1,1,1]]
 
-    Solution1 Obj1;
-    cout << Obj1.cherryPickup(grid1);
+    Solution2 Obj1;
+    cout << Obj1.cherryPickup(grid);
 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
