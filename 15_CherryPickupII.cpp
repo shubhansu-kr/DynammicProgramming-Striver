@@ -20,6 +20,60 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursive solution : Memoization
+public:
+    int cherryPickup(vector<vector<int>> &grid)
+    {
+        vector<vector<vector<int>>> dp(grid.size(), vector<vector<int>>(grid[0].size(), vector<int>(grid[0].size(), -1)));
+        return solve(grid, dp, 0, 0, grid[0].size() - 1);
+    }
+    int solve(vector<vector<int>> &grid, vector<vector<vector<int>>> &dp, int i = 0, int j1 = 0, int j2 = 0)
+    {
+        // Base Condition - Out of bound || Reached destination
+
+        // Out of bound
+        if (j1 < 0 || j2 < 0 || j1 >= grid[0].size() || j2 >= grid[0].size())
+        {
+            return -1e9;
+        }
+        // Reached Destination
+        if (i == grid.size() - 1)
+        {
+            // Check for common cell
+            if (j1 == j2)
+                return grid[i][j1];
+            else
+                return grid[i][j1] + grid[i][j2];
+        }
+
+        if (dp[i][j1][j2] != -1)
+        {
+            return dp[i][j1][j2];
+        }
+        int subMax = INT_MIN;
+
+        // Loop through possibilites
+        for (int x = -1; x < 2; ++x)
+        {
+            for (int y = -1; y < 2; ++y)
+            {
+                // Check for common cell
+                if (j1 == j2)
+                {
+                    subMax = max(subMax, grid[i][j1] + solve(grid, dp, i + 1, j1 + x, j2 + y));
+                }
+                else
+                {
+                    subMax = max(subMax, grid[i][j1] + grid[i][j2] + solve(grid, dp, i + 1, j1 + x, j2 + y));
+                }
+            }
+        }
+        return dp[i][j1][j2] = subMax;
+    }
+};
+
 class Solution
 {
     // Recursive solution
@@ -74,7 +128,7 @@ int main()
 {
     vector<vector<int>> grid = {{3, 1, 1}, {2, 5, 1}, {1, 5, 5}, {2, 1, 1}};
 
-    Solution obj1;
+    Solution1 obj1;
     cout << obj1.cherryPickup(grid);
 
     ios_base::sync_with_stdio(false);
