@@ -12,6 +12,50 @@ using namespace std;
 
 class Solution1
 {
+    // Recursion Optimised : Memoization
+public:
+    bool subsetSumToK(int n, int k, vector<int> &arr)
+    {
+        vector<vector<int>> dp(n + 1, vector<int>(k + 1, -1));
+        return solve(arr, dp, k, n - 1);
+    }
+
+    bool solve(vector<int> &arr, vector<vector<int>> &dp, int k, int n)
+    {
+        if (n == 0 || k == 0)
+        {
+            if (k == 0)
+                return true;
+            else
+                return (arr[n] == k);
+        }
+
+        if (dp[n][k] != -1)
+        {
+            return dp[n][k];
+        }
+
+        // pick element
+        bool pick = false;
+        if (k >= arr[n])
+        {
+            pick = solve(arr, dp, k - arr[n], n - 1);
+        }
+
+        if (pick)
+        {
+            return pick;
+        }
+
+        // No pick
+        bool notPick = solve(arr, dp, k, n - 1);
+
+        return dp[n][k] = pick || notPick;
+    }
+};
+
+class Solution1
+{
     // Recursion Optimised
 public:
     bool subsetSumToK(int n, int k, vector<int> &arr)
@@ -23,22 +67,26 @@ public:
     {
         if (n == 0 || k == 0)
         {
-            if (k == 0) return true;            
-            else return (arr[n] == k);            
+            if (k == 0)
+                return true;
+            else
+                return (arr[n] == k);
         }
 
         // pick element
         bool pick = false;
-        if (k >= arr[n]) {
-            pick = solve(arr, k-arr[n], n-1);
+        if (k >= arr[n])
+        {
+            pick = solve(arr, k - arr[n], n - 1);
         }
 
-        if(pick) {
+        if (pick)
+        {
             return pick;
         }
 
         // No pick
-        bool notPick = solve(arr, k, n-1);
+        bool notPick = solve(arr, k, n - 1);
 
         return pick || notPick;
     }
