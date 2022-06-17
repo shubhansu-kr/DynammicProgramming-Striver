@@ -10,6 +10,40 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursion Optimised
+public:
+    bool subsetSumToK(int n, int k, vector<int> &arr)
+    {
+        return solve(arr, k, n - 1);
+    }
+
+    bool solve(vector<int> &arr, int k, int n)
+    {
+        if (n == 0 || k == 0)
+        {
+            if (k == 0) return true;            
+            else return (arr[n] == k);            
+        }
+
+        // pick element
+        bool pick = false;
+        if (k >= arr[n]) {
+            pick = solve(arr, k-arr[n], n-1);
+        }
+
+        if(pick) {
+            return pick;
+        }
+
+        // No pick
+        bool notPick = solve(arr, k, n-1);
+
+        return pick || notPick;
+    }
+};
+
 class Solution
 {
     // Simple recursive solution
@@ -43,16 +77,16 @@ public:
         {
             return true;
         }
-        return false ;
+        return false;
     }
 };
 
 int main()
 {
     vector<int> arr = {1, 2, 3, 4};
-    int k = 0;
+    int k = 88;
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.subsetSumToK(4, k, arr);
 
     ios_base::sync_with_stdio(false);
