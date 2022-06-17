@@ -7,6 +7,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation
+
+public:
+    bool canPartition(vector<int> &nums)
+    {
+        int sum = 0, n = nums.size();
+        for (int a : nums)
+            sum += a;
+        if (sum % 2 != 0)
+            return false;
+
+        int k = sum / 2;
+        vector<vector<bool>> dp(n, vector<bool>(k + 1, false));
+        for (int i = 0; i < n; ++i)
+            dp[i][0] = true;
+        dp[0][nums[0]] = true;
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= k; ++j)
+            {
+                bool notTake = dp[i - 1][j];
+                bool take = false;
+                if (nums[i] <= j)
+                    take = dp[i - 1][j - nums[i]];
+                dp[i][j] = (take || notTake);
+            }
+        }
+        return dp[n - 1][k];
+    }
+};
+
 class Solution3
 {
     // Recursion Optimised : Memoization
@@ -17,7 +50,7 @@ public:
         int sum = 0, n = nums.size();
         for (int a : nums)
             sum += a;
-        vector<vector<int>> dp(n+1, vector<int>(sum / 2+1, -1));
+        vector<vector<int>> dp(n + 1, vector<int>(sum / 2 + 1, -1));
         return (sum % 2) ? false : solve(nums, dp, sum / 2, n - 1);
     }
 
