@@ -7,6 +7,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursion Optimised :
+
+public:
+    bool canPartition(vector<int> &nums)
+    {
+        int sum = 0, n = nums.size();
+        for (int a : nums)
+            sum += a;
+        return (sum % 2) ? false : solve(nums, sum / 2, n - 1);
+    }
+
+    bool solve(vector<int> &nums, int k, int i)
+    {
+        if (k == 0)
+            return true;
+        if (i == 0)
+            return k == nums[i];
+
+        // Pick
+        bool pick = false;
+        if (nums[i] <= k)
+            pick = solve(nums, k - nums[i], i - 1);
+        if (pick)
+            return pick;
+        // NotPick
+        bool noPick = solve(nums, k, i - 1);
+    
+        return (pick || noPick);
+    }
+};
+
 class Solution1
 {
     // Recursive solution : Memoization
@@ -82,7 +115,7 @@ int main()
 {
     vector<int> nums = {1, 9, 3, 5};
 
-    Solution Obj1;
+    Solution2 Obj1;
     cout << Obj1.canPartition(nums);
 
     ios_base::sync_with_stdio(false);
