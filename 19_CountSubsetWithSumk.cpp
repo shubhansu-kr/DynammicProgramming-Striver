@@ -9,6 +9,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursion optimised
+public:
+    int numSubseq(vector<int> &nums, int target)
+    {
+        int n = nums.size();
+        return solve(nums, target, n - 1);
+    }
+    int solve(vector<int> nums, int target, int i)
+    {
+        if (i == 0)
+            return nums[i] == target;
+        if (0 == target)
+            return 1;
+
+        // Pick
+        int p = solve(nums, target - nums[i], i - 1);
+        int np = solve(nums, target, i - 1);
+
+        return p + np;
+    }
+};
+
 class Solution
 {
     // BruteForce Solution : Recursion
@@ -43,10 +67,10 @@ public:
 int main()
 {
     //
-    vector<int> nums = {3, 5, 6, 7};
-    int target = 9;
+    vector<int> nums = {1, 4, 3, 2, 5, 6};
+    int target = 6;
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.numSubseq(nums, target);
 
     ios_base::sync_with_stdio(false);
