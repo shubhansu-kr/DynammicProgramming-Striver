@@ -22,11 +22,13 @@ public:
     {
         if (i == 0)
             return nums[i] == target;
-        if (0 == target)
-            return 1;
+        if (target == 0) return 1 ;
 
-        // Pick
-        int p = solve(nums, target - nums[i], i - 1);
+        // Pick : Dont pick if nums[i] > target
+        int p = 0;
+        if (nums[i] <= target)    
+            p = solve(nums, target - nums[i], i - 1);
+        // noPick
         int np = solve(nums, target, i - 1);
 
         return p + np;
@@ -46,19 +48,16 @@ public:
     }
     void solve(vector<int> nums, int &count, int target, int i)
     {
-        if (nums[i] == target)
-        {
-            ++count;
-            return;
-        }
         if (i < 0)
-            return;
-
-        // pick
-        if (nums[i] <= target)
         {
-            solve(nums, count, target - nums[i], i - 1);
+            if (target == 0)
+            {
+                ++count;
+            }
+            return;
         }
+        // pick
+        solve(nums, count, target - nums[i], i - 1);
         // not pick
         solve(nums, count, target, i - 1);
     }
@@ -66,7 +65,7 @@ public:
 
 int main()
 {
-    //
+    // 1,2,3 | 1,5 | 2,4 | 6 ---> 4 ;
     vector<int> nums = {1, 4, 3, 2, 5, 6};
     int target = 6;
 
