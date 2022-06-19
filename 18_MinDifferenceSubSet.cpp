@@ -10,6 +10,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Incomplete
+public:
+    int minimumDifference(vector<int> &nums)
+    {
+        // First Challenge : range of nums -1e7 to 1e7 : Convert the range to positive int
+        int totalSum = 0, n = nums.size();
+        for (int &a : nums)
+            a += 1e7, totalSum += a;
+        vector<vector<bool>> dp(n, vector<bool>(totalSum + 1, false));
+        for (int i = 0; i < n; ++i)
+            dp[i][0] = true;
+        dp[0][nums[0]] = true;
+
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= totalSum; ++j)
+            {
+                bool noTake = dp[i-1][j] ;
+                bool take = false ;  
+                if (nums[i] <= j) take = dp[i-1][j-nums[i]];
+                dp[i][j] = (take || noTake) ;
+            }
+        }
+        
+        // Now Find the min. absolute diff 
+    }
+};
+
 class Solution1
 {
     // Using subset sum
