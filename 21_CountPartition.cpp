@@ -12,6 +12,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Tabulation 
+    int mod = (int)(1e9 + 7);
+
+public:
+    int countPartitions(int n, int d, vector<int> &arr)
+    {
+        int totalSum = 0;
+        for (int &a : arr)
+            totalSum += a;
+        int target = (totalSum - d) / 2;
+        if ((totalSum - d) % 2 != 0 || (totalSum - d) < 0)
+            return 0;
+
+                
+    }
+};
+
 class Solution1
 {
     // Memoization : Recursion
