@@ -10,29 +10,33 @@ using namespace std;
 
 class Solution1
 {
-    // Recursion : Memoization 
+    // Recursion : Memoization
 public:
     int knapsack(vector<int> &weight, vector<int> &value, int &n, int &maxWeight)
     {
         // Write your code here
-        return steal(weight, value, maxWeight);
+        vector<int> dp(n, -1);
+        return steal(weight, value, dp, maxWeight);
     }
 
-    int steal(vector<int> &weight, vector<int> &value, int maxWeight, int i = 0)
+    int steal(vector<int> &weight, vector<int> &value, vector<int> &dp, int maxWeight, int i = 0)
     {
         if (i == weight.size())
         {
             return 0;
         }
 
+        if (dp[i] != -1)
+            return dp[i];
+
         // Pick
         int pick = INT_MIN;
         if (weight[i] <= maxWeight)
         {
-            pick = value[i] + steal(weight, value, maxWeight - weight[i], i + 1);
+            pick = value[i] + steal(weight, value, dp, maxWeight - weight[i], i + 1);
         }
         // NotPick
-        int noPick = steal(weight, value, maxWeight, i + 1);
+        int noPick = steal(weight, value, dp, maxWeight, i + 1);
 
         return max(pick, noPick);
     }
@@ -73,7 +77,7 @@ int main()
     int n = 4, maxWeight = 5;
     vector<int> weight = {1, 2, 4, 5}, value = {5, 4, 8, 6};
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.knapsack(weight, value, n, maxWeight);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
