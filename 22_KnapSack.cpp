@@ -8,6 +8,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Tabulation: Space Optimised
+public:
+    int knapsack(vector<int> &weight, vector<int> &value, int &n, int &maxWeight)
+    {
+        // Write your code here
+        vector<int> cp(maxWeight+1);
+        for (int i = 0; i <= maxWeight; ++i)
+        {
+            if(weight[0] <= i) cp[i]= value[0];
+        }
+        for (int i = 1; i < n; ++i)
+        {
+            vector<int> temp(maxWeight+1);
+            for (int j = 0; j <= maxWeight; ++j)
+            {
+                int pick = INT_MIN;
+                if (weight[i] <= j)
+                {
+                    pick = value[i] + cp[j-weight[i]];
+                }
+                // NotPick
+                int noPick = cp[j];
+                temp[j] = max(pick, noPick) ;
+            }
+            cp = temp ;
+        }
+        return cp[maxWeight];
+    }
+};
+
 class Solution2
 {
     // Tabulation
@@ -108,7 +140,7 @@ int main()
     int n = 4, maxWeight = 5;
     vector<int> weight = {1, 2, 4, 5}, value = {5, 4, 8, 6};
 
-    Solution2 Obj1;
+    Solution3 Obj1;
     cout << Obj1.knapsack(weight, value, n, maxWeight);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
