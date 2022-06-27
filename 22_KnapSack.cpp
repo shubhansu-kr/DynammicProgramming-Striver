@@ -15,16 +15,27 @@ public:
     int knapsack(vector<int> &weight, vector<int> &value, int &n, int &maxWeight)
     {
         // Write your code here
-        vector<int> dp(n);
+        vector<vector<int>> dp(n, vector<int>(maxWeight + 1));
 
+        for (int i = 0; i <= maxWeight; ++i)
+        {
+            if(weight[0] <= i) dp[0][i] = value[0];
+        }
         for (int i = 1; i < n; ++i)
         {
-            int pick = INT_MIN;
-            int noPick = dp[i-1];
-
-            dp[i] = max(pick, noPick) ;
+            for (int j = 0; j <= maxWeight; ++j)
+            {
+                int pick = INT_MIN;
+                if (weight[i] <= j)
+                {
+                    pick = value[i] + dp[i-1][j-weight[i]];
+                }
+                // NotPick
+                int noPick = dp[i-1][j];
+                dp[i][j] = max(pick, noPick) ;
+            }
         }
-        
+        return dp[n-1][maxWeight];
     }
 };
 
@@ -35,7 +46,7 @@ public:
     int knapsack(vector<int> &weight, vector<int> &value, int &n, int &maxWeight)
     {
         // Write your code here
-        vector<vector<int>> dp(n, vector<int> (maxWeight+1, -1));
+        vector<vector<int>> dp(n, vector<int>(maxWeight + 1, -1));
         return steal(weight, value, dp, maxWeight);
     }
 
@@ -97,7 +108,7 @@ int main()
     int n = 4, maxWeight = 5;
     vector<int> weight = {1, 2, 4, 5}, value = {5, 4, 8, 6};
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.knapsack(weight, value, n, maxWeight);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
