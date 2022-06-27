@@ -8,6 +8,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Tabulation
+public:
+    int knapsack(vector<int> &weight, vector<int> &value, int &n, int &maxWeight)
+    {
+        // Write your code here
+        vector<int> dp(n);
+
+        for (int i = 1; i < n; ++i)
+        {
+            int pick = INT_MIN;
+            int noPick = dp[i-1];
+
+            dp[i] = max(pick, noPick) ;
+        }
+        
+    }
+};
+
 class Solution1
 {
     // Recursion : Memoization
@@ -15,19 +35,19 @@ public:
     int knapsack(vector<int> &weight, vector<int> &value, int &n, int &maxWeight)
     {
         // Write your code here
-        vector<int> dp(n, -1);
+        vector<vector<int>> dp(n, vector<int> (maxWeight+1, -1));
         return steal(weight, value, dp, maxWeight);
     }
 
-    int steal(vector<int> &weight, vector<int> &value, vector<int> &dp, int maxWeight, int i = 0)
+    int steal(vector<int> &weight, vector<int> &value, vector<vector<int>> &dp, int maxWeight, int i = 0)
     {
         if (i == weight.size())
         {
             return 0;
         }
 
-        if (dp[i] != -1)
-            return dp[i];
+        if (dp[i][maxWeight] != -1)
+            return dp[i][maxWeight];
 
         // Pick
         int pick = INT_MIN;
@@ -38,7 +58,7 @@ public:
         // NotPick
         int noPick = steal(weight, value, dp, maxWeight, i + 1);
 
-        return max(pick, noPick);
+        return dp[i][maxWeight] = max(pick, noPick);
     }
 };
 
