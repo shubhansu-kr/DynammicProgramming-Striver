@@ -32,7 +32,7 @@ public:
             {
                 // Pick
                 int pick = INT_MAX;
-                if (amount >= coins[i]) pick = 1 + temp[j - coins[i]];
+                if (j >= coins[i]) pick = 1 + temp[j - coins[i]];
                 // No Pick
                 int noPick = cp[j];
                 temp[j] = min(pick, noPick);
@@ -66,7 +66,7 @@ public:
             {
                 // Pick
                 int pick = INT_MAX;
-                if (amount >= coins[i]) pick = 1 + dp[i][j - coins[i]];
+                if (j >= coins[i]) pick = 1 + dp[i][j - coins[i]];
                 // No Pick
                 int noPick = dp[i - 1][j];
                 dp[i][j] = min(pick, noPick);
