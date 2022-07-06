@@ -7,6 +7,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution5
+{
+    // Tabulation: Space Optimised 
+public:
+    int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
+    {
+        vector<vector<int>> dp(n, vector<int>(w + 1));
+        vector<int> cp(w+1), xp(w+1);
+        for (int i = 0; i <= w; ++i)
+        {
+            cp[i] = (i / weight[0]) * profit[0];
+        }
+
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= w; ++j)
+            {
+                int pick = 0;
+                if (j >= weight[i])
+                {
+                    pick = profit[i] + xp[j-weight[i]];
+                }
+                int noPick = cp[j];
+
+                xp[j] = max(pick, noPick);
+            }
+            cp = xp ;
+        }
+
+        return cp[w];
+    }
+};
+
 class Solution4
 {
     // Tabulation
@@ -153,7 +186,7 @@ int main()
     vector<int> profit = {3, 4, 5, 1}, weight = {4, 1, 2, 3};
     int n = 4, w = 7;
 
-    Solution3 Obj1;
+    Solution5 Obj1;
     cout << Obj1.unboundedKnapsack(n, w, profit, weight);
 
     ios_base::sync_with_stdio(false);
