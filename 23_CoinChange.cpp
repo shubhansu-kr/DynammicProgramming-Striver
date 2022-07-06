@@ -10,6 +10,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Tabulation 
+public:
+    int coinChange(vector<int> &coins, int amount)
+    {
+        int n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount + 1, 0));
+
+        for (int i = 1; i <= amount; ++i)
+        {
+            if (i % coins[0] == 0) dp[0][i] = i / coins[0];
+            else dp[0][i] = 1e9;
+        }
+ 
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= amount; ++j)
+            {
+                // Pick
+                int pick = INT_MAX;
+                if (amount >= coins[i]) pick = 1 + dp[i][j - coins[i]];
+                // No Pick
+                int noPick = dp[i - 1][j];
+                dp[i][j] = min(pick, noPick);
+            }
+        }
+
+        int ans = dp[n - 1][amount];
+        return ans >= 1e9 ? -1 : ans;
+    }
+};
+
 class Solution2
 {
     // Recursion: Memoization
@@ -29,7 +62,8 @@ public:
         if (n == -1)
             return 1e9;
 
-        if (dp[n][amount] != -1) return dp[n][amount];
+        if (dp[n][amount] != -1)
+            return dp[n][amount];
         // Pick
         int pick = INT_MAX;
         if (amount >= coins[n])
@@ -105,10 +139,10 @@ public:
 
 int main()
 {
-    vector<int> coins = {1,4,6,9};
-    int amount = 31;
+    vector<int> coins = {1,2,5};
+    int amount = 11;
 
-    Solution2 Obj1;
+    Solution3 Obj1;
     cout << Obj1.coinChange(coins, amount);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
