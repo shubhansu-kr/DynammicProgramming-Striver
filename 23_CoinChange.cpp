@@ -10,6 +10,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursion: Optimised
+public:
+    int coinChange(vector<int> &coins, int amount)
+    {
+        int n = coins.size();
+        int ans = solve(coins, amount, n - 1);
+        return ans >= 1e9 ? -1 : ans;
+    }
+    int solve(vector<int> &coins, int amount, int n)
+    {
+        // base condition
+        if (amount == 0)
+            return 0;
+        if (n == -1)
+            return 1e9;
+
+        // Pick
+        int pick = INT_MAX;
+        if (amount >= coins[n])
+            pick = 1 + solve(coins, amount - coins[n], n);
+        // No Pick
+        int noPick = solve(coins, amount, n - 1);
+
+        return min(pick, noPick);
+    }
+};
+
 class Solution
 {
     // BruteForce: Recursion
@@ -45,10 +74,10 @@ public:
 
 int main()
 {
-    vector<int> coins = {1, 2, 5};
-    int amount = 11;
+    vector<int> coins = {2};
+    int amount = 0; 
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.coinChange(coins, amount);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
