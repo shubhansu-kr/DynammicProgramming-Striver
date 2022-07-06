@@ -10,6 +10,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation: Space Optimised  
+public:
+    int coinChange(vector<int> &coins, int amount)
+    {
+        int n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount + 1, 0));
+        vector<int> cp(amount+1, 0), temp(amount+1, 0);
+
+        for (int i = 1; i <= amount; ++i)
+        {
+            if (i % coins[0] == 0) cp[i] = i / coins[0];
+            else cp[i] = 1e9;
+        }
+ 
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= amount; ++j)
+            {
+                // Pick
+                int pick = INT_MAX;
+                if (amount >= coins[i]) pick = 1 + temp[j - coins[i]];
+                // No Pick
+                int noPick = cp[j];
+                temp[j] = min(pick, noPick);
+            }
+            cp = temp;
+        }
+
+        int ans = cp[amount];
+        return ans >= 1e9 ? -1 : ans;
+    }
+};
+
 class Solution3
 {
     // Tabulation 
@@ -142,7 +177,7 @@ int main()
     vector<int> coins = {1,2,5};
     int amount = 11;
 
-    Solution3 Obj1;
+    Solution4 Obj1;
     cout << Obj1.coinChange(coins, amount);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
