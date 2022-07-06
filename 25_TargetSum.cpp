@@ -12,6 +12,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursion : Optimised
+public:
+    int findTargetSumWays(vector<int> &nums, int target)
+    {
+        int n = nums.size();
+        return solve(nums, target, n - 1);
+    }
+    int solve(vector<int> &nums, int target, int n)
+    {
+        // Base Condition
+        if (n == -1)
+        {
+            if (target == 0)
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+        // Assign positive
+        int pos = solve(nums, target - nums[n], n - 1);
+        // Assign negative
+        int neg = solve(nums, target + nums[n], n - 1);
+
+        return pos + neg;
+    }
+};
+
 class Solution
 {
     // BruteForce : Recursion
@@ -25,12 +55,14 @@ public:
     void solve(vector<int> &nums, int &count, int target, int n)
     {
         // Base Condition
-        if (n == -1) {
-            if (target == 0) {
-                ++count ;
+        if (n == -1)
+        {
+            if (target == 0)
+            {
+                ++count;
             }
             return;
-        } 
+        }
 
         // Assign positive
         solve(nums, count, target - nums[n], n - 1);
@@ -44,7 +76,7 @@ int main()
     vector<int> nums = {1, 1, 1, 1, 1};
     int target = 3;
 
-    Solution Obj1;
+    Solution1 Obj1;
     cout << Obj1.findTargetSumWays(nums, target);
 
     ios_base::sync_with_stdio(false);
