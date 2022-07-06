@@ -10,6 +10,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation : Space Optimised 
+public:
+    int change(int amount, vector<int> &coins)
+    {
+        int n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amount + 1, 1));
+        vector<int> cp(amount+1, 1), temp(amount+1, 1);
+
+        for (int amt = 1; amt <= amount; ++amt)
+        {
+            if (amt % coins[0] == 0) cp[amt] = 1;
+            else cp[amt] = 0;
+        }
+
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= amount; ++j)
+            {
+                int pick = 0;
+                if (j >= coins[i]) pick = temp[j - coins[i]];
+                int noPick = cp[j];
+                temp[j] = pick + noPick;
+            }
+            cp = temp ;
+        }
+        return cp[amount];
+    }
+};
+
 class Solution3
 {
     // Tabulation
