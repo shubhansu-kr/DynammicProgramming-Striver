@@ -7,6 +7,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation
+public:
+    int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
+    {
+        vector<vector<int>> dp(n, vector<int>(w + 1));
+
+        for (int i = 0; i <= w; ++i)
+        {
+            dp[0][i] = (i / weight[0]) * profit[0];
+        }
+
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= w; ++j)
+            {
+                int pick = 0;
+                if (j >= weight[i])
+                {
+                    pick = profit[i] + dp[i][j-weight[i]];
+                }
+                int noPick = dp[i-1][j];
+
+                dp[i][j] = max(pick, noPick);
+            }
+        }
+
+        return dp[n-1][w];
+    }
+};
+
 class Solution3
 {
     // Recursion: Memoization
@@ -22,8 +54,9 @@ public:
             return 0;
         if (w <= 0)
             return 0;
-        
-        if (dp[n][w] != -1) return dp[n][w];
+
+        if (dp[n][w] != -1)
+            return dp[n][w];
 
         int pick = 0;
         if (w >= weight[n])
