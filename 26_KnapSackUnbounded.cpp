@@ -6,6 +6,35 @@
 
 #include <bits/stdc++.h>
 using namespace std;
+
+class Solution3
+{
+    // Recursion: Memoization
+public:
+    int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
+    {
+        vector<vector<int>> dp(n, vector<int>(w + 1, -1));
+        return solve(profit, weight, dp, w, n - 1);
+    }
+    int solve(vector<int> &profit, vector<int> &weight, vector<vector<int>> &dp, int w, int n)
+    {
+        if (n == -1)
+            return 0;
+        if (w <= 0)
+            return 0;
+        
+        if (dp[n][w] != -1) return dp[n][w];
+
+        int pick = 0;
+        if (w >= weight[n])
+        {
+            pick = profit[n] + solve(profit, weight, dp, w - weight[n], n);
+        }
+        int noPick = solve(profit, weight, dp, w, n - 1);
+        return max(pick, noPick);
+    }
+};
+
 class Solution2
 {
     // Recursion: Optimised
@@ -91,7 +120,7 @@ int main()
     vector<int> profit = {3, 4, 5, 1}, weight = {4, 1, 2, 3};
     int n = 4, w = 7;
 
-    Solution2 Obj1;
+    Solution3 Obj1;
     cout << Obj1.unboundedKnapsack(n, w, profit, weight);
 
     ios_base::sync_with_stdio(false);
