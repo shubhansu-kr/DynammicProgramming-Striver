@@ -7,13 +7,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution6
+{
+    // Tabulation: Space Optimised: Single Arr 
+public:
+    int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
+    {
+        vector<int> cp(w+1);
+        for (int i = 0; i <= w; ++i)
+        {
+            cp[i] = (i / weight[0]) * profit[0];
+        }
+
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 1; j <= w; ++j)
+            {
+                int pick = 0;
+                if (j >= weight[i])
+                {
+                    pick = profit[i] + cp[j-weight[i]];
+                }
+                int noPick = cp[j];
+
+                cp[j] = max(pick, noPick);
+            }
+        }
+
+        return cp[w];
+    }
+};
+
 class Solution5
 {
     // Tabulation: Space Optimised 
 public:
     int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
     {
-        vector<vector<int>> dp(n, vector<int>(w + 1));
         vector<int> cp(w+1), xp(w+1);
         for (int i = 0; i <= w; ++i)
         {
