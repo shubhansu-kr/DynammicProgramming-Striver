@@ -12,7 +12,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Recursion : subset Sum : Memoization
+public:
+    int findTargetSumWays(vector<int> &nums, int target)
+    {
+        int n = nums.size();
+        int sumNums = accumulate(nums.begin(), nums.end(), 0);
+        target = (sumNums + target) / 2;
+        vector<vector<int>> dp(n, vector<int>(target + 1, -1));
+        return solve(nums, dp, target, n - 1);
+    }
+    int solve(vector<int> nums, vector<vector<int>> &dp, int target, int i)
+    {
+        if (i == 0)
+            return nums[i] == target;
+        if (target == 0)
+            return 1;
 
+        if (dp[i][target] != -1)
+            return dp[i][target];
+
+        // Pick : Dont pick if nums[i] > target
+        int p = 0;
+        if (nums[i] <= target)
+            p = solve(nums, dp, target - nums[i], i - 1);
+        // noPick
+        int np = solve(nums, dp, target, i - 1);
+
+        return dp[i][target] = p + np;
+    }
+};
 
 class Solution2
 {
