@@ -7,6 +7,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursion: Memoization 
+public:
+    int solve(vector<int> &price,vector<vector<int>> &dp, int len, int n)
+    {
+        if (n == -1) return 0;
+        
+        if (dp[n][len] != -1) return dp[n][len];
+        
+        int cut = 0;
+        if (len >= n+1) cut = price[n] + solve(price,dp, len-(n+1), n);    
+        int noCut = solve(price,dp, len, n - 1);
+        return dp[n][len] = max(cut, noCut);
+    }
+
+    int cutRod(vector<int> &price, int n)
+    {
+        vector<vector<int>> dp(n, vector<int>(n+1, -1));
+        return solve(price,dp, n, n-1);
+    }
+};
+
 class Solution1
 {
     // Recursion: Optimised
@@ -64,7 +87,7 @@ int main()
     int n = 6;
     vector<int> price = {3, 5, 6, 7, 10, 12};
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.cutRod(price, n);
 
     ios_base::sync_with_stdio(false);
