@@ -7,6 +7,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation: Space Optimised
+public:
+    int cutRod(vector<int> &price, int n)
+    {
+        vector<vector<int>> dp(n, vector<int>(n + 1));
+        vector<int> cp(n + 1), xp(n + 1);
+        for (int len = 1; len <= n; ++len)
+        {
+            cp[len] = price[0] * len;
+        }
+
+        for (int i = 1; i < n; ++i)
+        {
+            for (int j = 0; j <= n; ++j)
+            {
+                int cut = INT_MIN;
+                if (j >= i + 1)
+                    cut = price[i] + xp[j - 1 - i];
+                int noCut = cp[j];
+                xp[j] = max(cut, noCut);
+            }
+            cp = xp;
+        }
+
+        return cp[n];
+    }
+};
+
 class Solution3
 {
     // Tabulation
@@ -21,11 +51,11 @@ public:
 
         for (int i = 1; i < n; ++i)
         {
-            for (int j = 1; j <= n; ++j)
+            for (int j = 0; j <= n; ++j)
             {
                 int cut = INT_MIN;
                 if (j >= i + 1)
-                    cut = price[n] + dp[i][j - 1 - i];
+                    cut = price[i] + dp[i][j - 1 - i];
                 int noCut = dp[i - 1][j];
                 dp[i][j] = max(cut, noCut);
             }
