@@ -12,6 +12,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursion: Memoization 
+public:
+    int longestCommonSubsequence(string text1, string text2)
+    {
+        int n1 = text1.size(), n2 = text2.size();
+        vector<vector<int>> dp(n1, vector<int>(n2, -1));
+        return solve(text1, text2, dp, n1 - 1, n2 - 1);
+    }
+    int solve(string &s1, string &s2, vector<vector<int>> &dp, int n1, int n2)
+    {
+        // Base condition
+        if (n1 == -1 || n2 == -1)
+            return 0;
+
+        // Dp
+        if (dp[n1][n2] != -1) return dp[n1][n2];
+
+        // Match
+        if (s1[n1] == s2[n2])
+        {
+            return 1 + solve(s1, s2, dp, n1 - 1, n2 - 1);
+        }
+        else
+        {
+            return max(solve(s1, s2, dp, n1, n2 - 1), solve(s1, s2, dp, n1 - 1, n2));
+        }
+    }
+};
+
 class Solution
 {
     // BruteForce: Recursion
