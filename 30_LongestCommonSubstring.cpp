@@ -8,9 +8,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution1
+class Solution_
 {
-    // Print the longest common substring
+    // Print the longest common substring - FollowUp
 public:
     int longestCommonSubsequence(string text1, string text2)
     {
@@ -44,6 +44,33 @@ public:
         
         cout << lcs;
         return 0; 
+    }
+};
+
+class Solution1
+{
+    // Space Optmised 
+public:
+    int longestCommonSubsequence(string text1, string text2)
+    {
+        int n1 = text1.size(), n2 = text2.size();
+        vector<vector<int>> dp(n1 + 1, vector<int>(n2 + 1, 0));
+        vector<int> curr(n2+1), temp(n2+1);
+
+        int ans = INT_MIN;
+        for (int i = 1; i <= n1; ++i)
+        {
+            for (int j = 1; j <= n2; ++j)
+            {
+                if (text1[i - 1] == text2[j - 1])
+                    temp[j] = 1 + curr[j - 1];
+                else
+                    temp[j] = 0;
+                ans = max(ans, temp[j]);
+            }
+            curr = temp ;
+        }
+        return ans;
     }
 };
 
