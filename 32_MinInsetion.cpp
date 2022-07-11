@@ -8,6 +8,34 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+class Solution3
+{
+    // Using Longest Palindromic Subsequence
+public:
+    int longestPalindromeSubseq(string s)
+    {
+        // We just need to find the longest Palindromic subsequence 
+        // in string s and rev(s);
+        // Since we can insert anywhere in the string: Subseq 
+
+        string t = s;
+        reverse(s.begin(), s.end());
+
+        int n = s.size();
+        vector<int> cp(n + 1), xp(n + 1);
+
+        for (int i = 1; i <= n; ++i)
+        {
+            for (int j = 1; j <= n; ++j)
+            {
+                if (s[i - 1] == t[j - 1]) xp[j] = 1 + cp[j - 1];
+                else xp[j] = max(xp[j - 1], cp[j]);
+            }
+            cp = xp;
+        }
+        return (n - cp[n]);
+    }
+};
 class Solution2 {
     // Tabulation 
 public:
