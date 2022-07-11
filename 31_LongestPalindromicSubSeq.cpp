@@ -3,6 +3,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Tabulation : Reverse string 
+public:
+    int longestPalindromeSubseq(string s)
+    {
+        // We just need to find the longest common subsequence 
+        // in string s and rev(s);
+
+        string t = s;
+        reverse(s.begin(), s.end());
+
+        int n1 = s.size(), n2 = t.size();
+        vector<int> cp(n2 + 1), xp(n2 + 1);
+
+        for (int i = 1; i <= n1; ++i)
+        {
+            for (int j = 1; j <= n2; ++j)
+            {
+                if (s[i - 1] == t[j - 1]) xp[j] = 1 + cp[j - 1];
+                else xp[j] = max(xp[j - 1], cp[j]);
+            }
+            cp = xp;
+        }
+        return cp[n2];
+    }
+};
+
 class Solution2
 {
     // Tabulation
