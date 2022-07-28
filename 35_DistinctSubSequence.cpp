@@ -3,6 +3,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution7
+{
+    // Tabulation: space optimised : SIngle Array
+public:
+    int numDistinct(string s, string t)
+    {
+        if (s.length() <= t.length()) return s == t;
+        vector<double> cp(t.length()+1);
+        cp[0] = 1;
+        for (int i = 1; i <= s.length(); ++i)
+            for (int j = t.length(); j >= 1; --j)
+                if (s[i-1] == t[j-1]) cp[j] = cp[j-1] + cp[j];
+        return (int)cp[t.length()];
+    }
+};
+
 class Solution6
 {
     // Tabulation: space optimised 
