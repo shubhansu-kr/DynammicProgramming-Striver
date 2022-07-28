@@ -3,9 +3,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution6
+{
+    // Tabulation: space optimised 
+public:
+    int numDistinct(string s, string t)
+    {
+        if (s.length() <= t.length()) return s == t;
+        vector<double> cp(t.length()+1), xp(t.length()+1);
+
+        cp[0] = xp[0] = 1;
+
+        for (int i = 1; i <= s.length(); ++i)
+        {
+            for (int j = 1; j <= t.length(); ++j)
+            {
+                if (s[i-1] == t[j-1]) xp[j] = cp[j-1] + cp[j];
+                else xp[j] = cp[j];
+            }   
+            cp = xp;
+        }
+        return (int)cp[t.length()];
+    }
+};
+
 class Solution5
 {
-    // Tabulation: Wrong Answer  
+    // Tabulation:   
 public:
     int numDistinct(string s, string t)
     {
@@ -23,7 +47,6 @@ public:
         }
         return (int)dp[s.length()][t.length()];
     }
-
 };
 
 class Solution4
