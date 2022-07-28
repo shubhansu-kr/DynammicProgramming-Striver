@@ -3,6 +3,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursion: Two pointer 
+public:
+    int numDistinct(string s, string t)
+    {
+        if (s.length() <= t.length()) return s.length() == t.length();
+        return solve(s, t);
+    }
+
+    int solve(string &s, string &t, int i = 0, int j = 0)
+    {
+        if (j == t.length() || i == s.length()) return j == t.length();
+        
+        if (s[i] == t[j]) return solve(s, t, i + 1, j + 1) + solve(s, t, i + 1, j);
+        else return solve(s, t, i + 1, j);
+    }
+};
+
 class Solution1
 {
     // Recursion
@@ -73,7 +92,7 @@ int main()
 {
     string s = "babgbag", t = "bag";
 
-    Solution1 Obj1;
+    Solution2 Obj1;
     cout << Obj1.numDistinct(s, t);
 
     ios_base::sync_with_stdio(false);
