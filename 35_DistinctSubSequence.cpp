@@ -3,6 +3,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Recursion: Memoization 
+public:
+    int numDistinct(string s, string t)
+    {
+        if (s.length() <= t.length()) return s == t;
+        vector<vector<int>> dp(s.length(), vector<int> (t.length(), -1));
+        return solve(s, t, dp);
+    }
+
+    int solve(string &s, string &t,vector<vector<int>> &dp, int i = 0, int j = 0)
+    {
+        if (j == t.length() || i == s.length()) return j == t.length();
+        if (dp[i][j] != -1) return dp[i][j];
+
+        if (s[i] == t[j]) return dp[i][j] = solve(s, t, dp, i + 1, j + 1) + solve(s, t, dp, i + 1, j);
+        else return dp[i][j] = solve(s, t, dp, i + 1, j);
+    }
+};
+
 class Solution2
 {
     // Recursion: Two pointer 
@@ -92,7 +113,7 @@ int main()
 {
     string s = "babgbag", t = "bag";
 
-    Solution2 Obj1;
+    Solution3 Obj1;
     cout << Obj1.numDistinct(s, t);
 
     ios_base::sync_with_stdio(false);
