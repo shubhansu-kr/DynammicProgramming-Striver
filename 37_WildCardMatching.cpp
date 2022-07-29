@@ -10,6 +10,38 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+class Solution1 
+{
+    // Recursion: Memoization
+public:
+    bool isMatch(string s, string p) {
+        int m = s.length(), n = p.length();
+        vector<vector<int>> dp(m, vector<int> (n, -1));
+        return solve(s, p, dp, m-1, n-1);
+    }
+
+    bool solve(string &s, string &p, vector<vector<int>> &dp, int i, int j) {
+
+        if (j == -1) return i == -1;
+        if (i == -1) {
+            while (j > -1) {
+                if (p[j] != '*'){
+                    return false;
+                }
+                --j;
+            }
+            return true;
+        }
+
+        if (dp[i][j] != -1) return dp[i][j];
+
+        if(s[i] == p[j] || p[j] == '?') return dp[i][j] = solve(s, p, dp, i-1, j-1);
+        if(p[j] == '*') for (int k = 0; k <= i+1; ++k){if (solve(s, p, dp, i-k, j-1)) return dp[i][j] = true;}
+        return dp[i][j] = false;
+    }
+
+};
+
 class Solution 
 {
     // BruteForce: Recursion
