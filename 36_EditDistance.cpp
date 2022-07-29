@@ -25,15 +25,14 @@ public:
     int solve(string &s, string &t, vector<vector<int>> &dp, int i, int j)
     {
         if (j == -1){return i+1;}
+        if (i == -1){return j+1;}
 
         if (dp[i][j] != -1) return dp[i][j];
 
-        if (i >= 0 && s[i] == t[j]) return dp[i][j] = solve(s, t, dp, i - 1, j - 1);
+        if (s[i] == t[j]) return dp[i][j] = solve(s, t, dp, i - 1, j - 1);
 
-        int del = INT_MAX;
-        if (i >= 0){del = 1 + solve(s, t, dp, i - 1, j);}
-        int rep = INT_MAX;
-        if (i >= 0){rep = 1 + solve(s, t, dp, i - 1, j - 1);}
+        int del = 1 + solve(s, t, dp, i - 1, j);
+        int rep = 1 + solve(s, t, dp, i - 1, j - 1);
         int ins = 1 + solve(s, t, dp, i, j - 1);
         int dup = min(del, rep);
         return dp[i][j] = min(dup , ins);
