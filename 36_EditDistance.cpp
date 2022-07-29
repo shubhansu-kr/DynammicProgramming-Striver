@@ -10,6 +10,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Tabulation : Space Optimisation 
+public:
+    int minDistance(string word1, string word2)
+    {
+        int m = word1.length(), n = word2.length();
+        vector<int> curr(n+1), prev(n+1);
+        for (int j = 0; j <= n; ++j){prev[j] = j;}
+        for (int i = 1; i <= m; ++i){
+            curr[0] = i;
+            for (int j = 1; j <= n; ++j)
+            {
+                if (word1[i-1] == word2[j-1]) curr[j] = prev[j-1];
+                else {
+                    int del = 1 + prev[j];
+                    int rep = 1 + prev[j - 1];
+                    int ins = 1 + curr[j - 1];
+                    int dup = min(del, rep);
+                    curr[j] = min(dup , ins);
+                }
+            }
+            prev = curr;
+        }
+        return curr[n];
+    }
+};
+
+
 class Solution2 
 {
     // Tabulation 
@@ -36,7 +65,6 @@ public:
             }
         return dp[m][n];
     }
-
 };
 
 class Solution1
