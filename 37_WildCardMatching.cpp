@@ -12,6 +12,33 @@ using namespace std ;
 
 class Solution1 
 {
+    // Tabulation : Wrong Solution 
+public:
+    bool isMatch(string s, string p) {
+        int m = s.length(), n = p.length();
+        vector<vector<bool>> dp(m+1, vector<bool> (n+1, false));
+        dp[0][0] = true;
+        for (int i = 1; i <= p.length(); ++i)
+        {
+            if (p[i-1] == '*') {dp[0][i] = true;}
+            else {break;}
+        }
+        
+        for (int i = 1; i < s.length(); ++i)
+        {
+            for (int j = 1; j < p.length(); ++j)
+            {
+                if(s[i-1] == p[j-1] || p[j] == '?') dp[i][j] = dp[i-1][j-1];
+                else if(p[j] == '*') for (int k = 0; k <= i; ++k){if (dp[i-k][j-1]) dp[i][j] = true;}
+                else dp[i][j] = false;
+            }
+        }
+        return dp[m][n];
+    }
+};
+
+class Solution1 
+{
     // Recursion: Memoization
 public:
     bool isMatch(string s, string p) {
