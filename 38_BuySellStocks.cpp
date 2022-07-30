@@ -10,6 +10,27 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+class Solution1 {
+    // Min. 
+public:
+    int maxProfit(vector<int>& prices) {
+        vector<int> track(prices.size());
+        int mini = prices[0];
+        for (int i = 1; i < prices.size(); ++i)
+        {
+            track[i] = mini;
+            mini = min(mini, prices[i]);
+        }
+        int ans = 0;
+        for (int i = prices.size()-1; i > 0; --i)
+        {
+            track[i] = prices[i] - track[i];
+            ans = max(ans, track[i]);
+        }
+        return ans;
+    }
+};
+
 class Solution {
     // BruteForce : TLE 
 public:
