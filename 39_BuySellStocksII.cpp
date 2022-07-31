@@ -10,6 +10,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // BruteForce: Recursion 
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        return solve(prices);
+    }
+    int solve (vector<int> &prices, bool stock = false, int i = 0) {
+        // base case 
+        if (i == prices.size()) return 0 ;
+
+        int noAction = solve (prices, stock, i+1);
+        int action = solve(prices, !stock, i+1);
+        stock ? action += prices[i] : action -= prices[i];
+
+        return max(action, noAction); 
+    } 
+};
+
 class Solution
 {
     // Intution
