@@ -10,6 +10,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Recursion: Memoization
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        vector<vector<int>> dp(prices.size(), vector<int> (2, -1));
+        return solve(prices, dp);
+    }
+    int solve (vector<int> &prices, vector<vector<int>> &dp, int stock = 0, int i = 0) {
+        // base case 
+        if (i == prices.size()) return 0 ;
+
+        if (dp[i][stock] != -1) return dp[i][stock];
+        int noAction = solve (prices, dp, stock, i+1);
+        int action = solve(prices, dp, !stock, i+1);
+        stock ? action += prices[i] : action -= prices[i];
+
+        return dp[i][stock] = max(action, noAction); 
+    } 
+};
+
 class Solution1
 {
     // BruteForce: Recursion 
