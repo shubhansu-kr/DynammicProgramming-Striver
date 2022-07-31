@@ -10,6 +10,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation: Space Optimised 
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        int n = prices.size();
+        vector<int> prev(2), curr(2);
+        for (int i = n-1; i >= 0; --i)
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                int noAction = prev[j];
+                int action = prev[!j];
+                j ? action += prices[i] : action -= prices[i];
+
+                curr[j] = max(action, noAction) ;
+            }
+            prev = curr;
+        }
+        return curr[0];
+    }
+};
+
 class Solution3
 {
     // Tabulation
