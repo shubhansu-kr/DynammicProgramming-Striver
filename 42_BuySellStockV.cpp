@@ -12,6 +12,43 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution1
+{
+    // Recursion: Memoization  
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        int n = prices.size();
+
+        vector<vector<vector<int>>> dp(n, vector<vector<int>> (2, vector<int>(2, -1)));
+        return trader(prices, dp, true);
+    }
+
+    int trader(vector<int> &prices, vector<vector<vector<int>>> &dp, int buy, int cooldown = 0, int i = 0)
+    {
+        // base Condition
+        if (i == prices.size()) return 0;
+        if (dp[i][buy][cooldown] != -1) return dp[i][buy][cooldown];
+
+        int take = INT_MIN, noTake = INT_MIN;
+        if (buy)
+        {
+            if (!cooldown)
+            {
+                take = trader(prices, dp, false, cooldown, i + 1) - prices[i];
+            }
+            noTake = trader(prices, dp, buy, false, i + 1); 
+        }
+        else
+        {
+            take = trader(prices, dp, true, true, i + 1) + prices[i];
+            noTake = trader(prices, dp, buy, cooldown, i + 1);
+        }
+
+        return dp[i][buy][cooldown] = max(take, noTake);
+    }
+};
+
 class Solution
 {
     // BruteForce: Recursion 
