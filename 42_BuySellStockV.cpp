@@ -12,6 +12,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution3
+{
+    // Tabulation: Space Optimised 
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        int n = prices.size();
+        vector<vector<int>> curr(2, vector<int>(2, 0)), temp(2, vector<int>(2, 0));
+                
+        for (int i = n-1; i >= 0; --i)
+        {
+            for (int buy = 0;  buy < 2; ++buy)
+            {
+                for (int cooldown = 0; cooldown < 2; ++cooldown)
+                {
+                    int take = INT_MIN, noTake = INT_MIN;
+                    if (buy)
+                    {
+                        if (!cooldown) take = curr[false][cooldown] - prices[i];
+                        noTake = curr[buy][false]; 
+                    }
+                    else
+                    {
+                        take = curr[true][true] + prices[i];
+                        noTake = curr[buy][cooldown];
+                    }
+                    temp[buy][cooldown] = max(take, noTake);
+                }   
+            }
+            curr = temp;
+        }
+        return curr[1][0];
+    }
+};
+
 class Solution2
 {
     // Tabulation 
