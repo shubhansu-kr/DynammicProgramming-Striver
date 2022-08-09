@@ -12,6 +12,40 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Tabulation 
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        int n = prices.size();
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>> (2, vector<int>(2, 0)));
+        
+        for (int i = n-1; i >= 0; --i)
+        {
+            for (int buy = 0;  buy < 2; ++buy)
+            {
+                for (int cooldown = 0; cooldown < 2; ++cooldown)
+                {
+                    int take = INT_MIN, noTake = INT_MIN;
+                    if (buy)
+                    {
+                        if (!cooldown) take = dp[i + 1][false][cooldown] - prices[i];
+                        noTake = dp[i + 1][buy][false]; 
+                    }
+                    else
+                    {
+                        take = dp[i + 1][true][true] + prices[i];
+                        noTake = dp[i + 1][buy][cooldown];
+                    }
+                    dp[i][buy][cooldown] = max(take, noTake);
+                }   
+            }
+        }
+        return dp[0][1][0];
+    }
+};
+
 class Solution1
 {
     // Recursion: Memoization  
