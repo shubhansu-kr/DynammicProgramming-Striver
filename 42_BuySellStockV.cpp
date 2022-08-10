@@ -12,6 +12,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution5 {
+    // BruteForce: Recursion 
+public:
+    int maxProfit(vector<int> &prices) {
+        return trader(prices);
+    }
+
+    int trader (vector<int> &prices, int i = 0, int stock = 0) {
+        if (i >= prices.size()) return 0;
+        
+        int action = 0, noAction = 0;
+        if (stock) {
+            action = trader(prices, i+2) + prices[i];
+            noAction = trader(prices, i+1, 1);
+        }
+        else {
+            action = trader(prices, i+1, 1) - prices[i];
+            noAction = trader(prices, i+1);
+        }
+
+        return max(action, noAction);
+    }
+};
+
 class Solution4
 {
     // Discussion solution 
