@@ -12,6 +12,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution7 {
+    // Tabulation 
+public:
+    int maxProfit(vector<int> &prices) {
+        int n = prices.size();
+        vector<vector<int>> dp(n+2, vector<int>(2, 0));
+
+        for (int i = n-1; i >= 0; --i)
+        {
+            for (int stock = 0; stock < 2; ++stock)
+            {
+                int action = 0, noAction = dp[i+1][stock];
+                if (stock) action = dp[i+2][0] + prices[i];
+                else action = dp[i+1][1] - prices[i];
+                dp[i][stock] = max(action, noAction);
+            }
+        }
+        
+        return dp[0][0];
+    }
+};
+
 class Solution6 {
     // Recursion: Memoization 
 public:
