@@ -11,6 +11,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution2
+{
+    // Tabulation 
+public:
+    int maxProfit(vector<int> &prices, int fee)
+    {
+        int n = prices.size();
+        vector<vector<int>> dp(n+1, vector<int> (2, 0));
+
+        for (int i = n-1; i >= 0; --i)
+        {
+            for (int stock = 0; stock < 2; ++stock)
+            {
+                int action = dp[i+1][!stock], noAction = dp[i+1][stock];
+                stock ? action += (prices[i] - fee): action -= prices[i];
+                dp[i][stock] = max(action, noAction);
+            }
+        }        
+        return dp[0][0];
+    }
+};
+
 class Solution1
 {
     // Recursion: Memoization 
