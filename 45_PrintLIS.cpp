@@ -3,6 +3,41 @@
 #include <bits/stdc++.h>
 using namespace std ;
 
+class Solution2 {
+    // Print 
+public:
+    vector<int> LongestIncreasingSubSequence(vector<int> nums) {
+        int n = nums.size();
+        // dp[i] signifies the size of subsequece if ss ends at index i
+        vector<int> dp(n, 1), hash(n);
+        for (int i = 0; i < n; ++i){hash[i] = i ;}
+        int maxIndex = 0, maxVal = INT_MIN;
+        for (int i = 0; i < n; ++i)
+        {    
+            for (int j = 0; j < i; ++j)
+            {
+                if (nums[j] < nums[i] && dp[i] < dp[j]+1) {
+                    hash[i] = j ;
+                    dp[i] = dp[j]+1;
+                    if (maxVal < dp[i]) {
+                        maxVal = dp[i];
+                        maxIndex = i;
+                    }
+                }
+            }
+        }
+        vector<int> LIS;
+        while(true) {
+            LIS.emplace_back(nums[maxIndex]);
+            if (maxIndex == hash[maxIndex]) break;
+            maxIndex = hash[maxIndex];
+        };
+        
+        reverse(LIS.begin(), LIS.end()); 
+        return LIS;
+    }
+};
+
 class Solution1 {
     // Classic DP 
 public:
@@ -46,6 +81,14 @@ public:
 
 int main () {
     
+    Solution2 Obj;
+    vector<int> nums = {5, 6, 8, 3, 26, 90};
+
+    vector<int> res = Obj.LongestIncreasingSubSequence(nums);
+    for(auto &it: res) {
+        cout << it << " ";
+    }
+
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     return 0;
