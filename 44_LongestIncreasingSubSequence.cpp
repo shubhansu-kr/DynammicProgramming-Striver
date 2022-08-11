@@ -11,6 +11,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Solution4
+{
+    // Tabulation: SpaceOptimisation 
+public:
+    int lengthOfLIS(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<int> curr(n+1, 0), temp(n+1, 0);
+        for (int i = 1; i <= n; ++i)
+        {
+            for (int j = 0; j <= n; ++j)
+            {
+                int pick = -1e9;
+                if (j == 0 || nums[j-1] > nums[i-1]) {pick = 1 + curr[i];}
+                int noPick = curr[j];
+                temp[j] = max(pick, noPick);
+            }
+            curr = temp;
+        }
+        return curr[0];
+    }
+};
+
 class Solution3
 {
     // Tabulation 
