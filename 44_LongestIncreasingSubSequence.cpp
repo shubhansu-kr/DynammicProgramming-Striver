@@ -13,6 +13,25 @@ using namespace std;
 
 class Solution
 {
+    // BruteForce: Recursion 
+public:
+    int lengthOfLIS(vector<int> &nums)
+    {
+        int n = nums.size();
+        return solve(nums, n-1);
+    }
+    int solve(vector<int> &nums, int i, int j = -1)
+    {
+        if (i == -1) return 0;
+        int pick = -1e9;
+        if (j == -1 || nums[j] > nums[i]) {pick = 1 + solve(nums, i-1, i);}
+        int noPick = solve(nums, i-1, j);
+        return max(pick, noPick);
+    }
+};
+
+class Solution
+{
     // BruteForce: Recursion
 public:
     int lengthOfLIS(vector<int> &nums)
